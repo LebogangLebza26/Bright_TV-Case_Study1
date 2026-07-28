@@ -1,0 +1,321 @@
+
+-- I wanted to see the whole table before I start doing any analysis on it
+SELECT *
+FROM bright_tv.brightdata.user_profiles; 
+
+-- checking for duplicates in my data
+SELECT UserID,
+ COUNT(*) AS duplicate_count
+FROM bright_tv.brightdata.user_profiles
+GROUP BY UserID
+HAVING COUNT(*) > 1;
+
+-- I am checking the size of the data
+SELECT COUNT(*) AS number_of_rows,
+ COUNT(DISTINCT UserID) AS number_subs
+FROM bright_tv.brightdata.user_profiles;
+
+-- Are the any rows where useRID is NULL
+SELECT COUNT(*) AS cnt
+FROM bright_tv.brightdata.user_profiles
+WHERE UserID IS NULL;
+
+-- Distinct UseID--different amount of userIDs
+SELECT DISTINCT UserID
+FROM bright_tv.brightdata.user_profiles;
+---------------------------------------------------------
+--Gender Checks
+---------------------------------------------------------
+SELECT DISTINCT gender
+FROM bright_tv.brightdata.user_profiles
+-- SELECT COUNT(*)
+-- FROM bright_tv.brightdata.user_profiles
+-- WHERE gender=' ';
+
+SELECT
+    COUNT(DISTINCT userid) AS subs,
+    CASE
+    WHEN gender =' ' THEN 'unknown'
+    WHEN gender = 'None' THEN 'unknown'
+ ELSE gender
+ END AS Gender
+FROM bright_tv.brightdata.user_profiles
+GROUP BY Gender;
+---------------------------------------------------------
+--Race Checks
+---------------------------------------------------------
+SELECT COUNT(*) AS num_rows
+FROM bright_tv.brightdata.user_profiles
+WHERE Race IS NULL;
+
+
+SELECT DISTINCT Race
+FROM bright_tv.brightdata.user_profiles
+
+SELECT DISTINCT
+    CASE
+    WHEN Race='other' THEN 'unknown'
+    WHEN Race=' ' THEN 'unknown'
+    WHEN Race='None'THEN 'unknown'
+    ELSE Race
+END AS Race
+FROM bright_tv.brightdata.user_profiles
+
+---------------------------------------------------------
+--Province Checks
+---------------------------------------------------------
+SELECT DISTINCT Province
+FROM bright_tv.brightdata.user_profiles;
+
+SELECT DISTINCT
+    CASE
+    WHEN Province=' ' THEN 'Uncategorized'
+    WHEN Province='None' THEN 'Uncategorized'
+    ELSE Province
+    END AS Region
+FROM bright_tv.brightdata.user_profiles;
+
+---------------------------------------------------------
+--Age
+---------------------------------------------------------
+SELECT MIN (age) AS min_age,
+ MAX(age) AS max_age
+FROM bright_tv.brightdata.user_profiles;
+
+SELECT COUNT(*) AS cnt
+FROM bright_tv.brightdata.user_profiles
+WHERE age IS NULL;
+
+WITH user_profiles AS (
+    SELECT 
+        UserID,
+        
+        CASE
+            WHEN Province = ' ' THEN 'Uncategorized'
+            WHEN Province = 'None' THEN 'Uncategorized'
+            WHEN Province IS NULL THEN 'Uncategorized'
+            ELSE Province
+        END AS Region,
+        
+        age,
+        
+        CASE
+            WHEN age = 0 THEN 'Infants'
+            WHEN age BETWEEN 1 AND 12 THEN 'Kids'
+            WHEN age BETWEEN 13 AND 19 THEN 'Teenager'
+            WHEN age BETWEEN 20 AND 35 THEN 'Youth'
+            WHEN age BETWEEN 36 AND 50 THEN 'Adult'
+            WHEN age BETWEEN 51 AND 65 THEN 'Elder'
+            WHEN age > 65 THEN 'Pensioner'
+            ELSE 'Unknown'
+        END AS age_groups,
+        
+        CASE
+            WHEN email IS NOT NULL AND email <> ' ' AND email <> 'None' THEN 1
+            ELSE 0
+        END AS email_flag,
+        
+        CASE
+            WHEN `Social Media Handle` IS NOT NULL 
+                 AND `Social Media Handle` <> ' ' 
+                 AND `Social Media Handle` <> 'None' THEN 1
+            ELSE 0
+        END AS sm_flag,
+        
+        CASE
+            WHEN Race = 'other' THEN 'None'
+            WHEN Race = ' ' THEN 'None'
+            WHEN Race IS NULL THEN 'None'
+            ELSE Race
+        END AS Race,
+        
+        CASE
+            WHEN gender = ' ' THEN 'None'
+            WHEN gender IS NULL THEN 'None'
+            ELSE gender
+        END AS Gender
+        
+    FROM bright_tv.brightdata.user_profiles
+)
+SELECT * FROM user_profiles;
+
+
+
+WITH User_profiles AS (
+    SELECT
+        COALESCE(UserID0, userid4) AS userid,
+        TO_CHAR(RecordDate2, 'yyyyMM') AS month_id,
+        TO_DATE(RecordDate2) AS watch_date,
+        TO_CHAR(RecordDate2, 'DD') AS day_of_month,
+        DAYNAME(RecordDate2) AS day_name,
+        MONTHNAME(RecordDate2) AS month_name,
+
+        CASE
+            WHEN DAYNAME(RecordDate2) IN ('Sat', 'Sun', 'Saturday', 'Sunday') THEN 'weekend'
+            ELSE 'weekday'
+        END AS day_classification
+
+    FROM bright_tv.brightdata.viewership
+)
+SELECT * FROM User_profiles;
+
+-- I wanted to see the whole table before I start doing any analysis on it
+SELECT *
+FROM bright_tv.brightdata.user_profiles; 
+
+-- checking for duplicates in my data
+SELECT UserID,
+ COUNT(*) AS duplicate_count
+FROM bright_tv.brightdata.user_profiles
+GROUP BY UserID
+HAVING COUNT(*) > 1;
+
+-- I am checking the size of the data
+SELECT COUNT(*) AS number_of_rows,
+ COUNT(DISTINCT UserID) AS number_subs
+FROM bright_tv.brightdata.user_profiles;
+
+-- Are the any rows where useRID is NULL
+SELECT COUNT(*) AS cnt
+FROM bright_tv.brightdata.user_profiles
+WHERE UserID IS NULL;
+
+-- Distinct UseID--different amount of userIDs
+SELECT DISTINCT UserID
+FROM bright_tv.brightdata.user_profiles;
+---------------------------------------------------------
+--Gender Checks
+---------------------------------------------------------
+SELECT DISTINCT gender
+FROM bright_tv.brightdata.user_profiles
+-- SELECT COUNT(*)
+-- FROM bright_tv.brightdata.user_profiles
+-- WHERE gender=' ';
+
+SELECT
+    COUNT(DISTINCT userid) AS subs,
+    CASE
+    WHEN gender =' ' THEN 'unknown'
+    WHEN gender = 'None' THEN 'unknown'
+ ELSE gender
+ END AS Gender
+FROM bright_tv.brightdata.user_profiles
+GROUP BY Gender;
+---------------------------------------------------------
+--Race Checks
+---------------------------------------------------------
+SELECT COUNT(*) AS num_rows
+FROM bright_tv.brightdata.user_profiles
+WHERE Race IS NULL;
+
+
+SELECT DISTINCT Race
+FROM bright_tv.brightdata.user_profiles
+
+SELECT DISTINCT
+    CASE
+    WHEN Race='other' THEN 'unknown'
+    WHEN Race=' ' THEN 'unknown'
+    WHEN Race='None'THEN 'unknown'
+    ELSE Race
+END AS Race
+FROM bright_tv.brightdata.user_profiles
+
+---------------------------------------------------------
+--Province Checks
+---------------------------------------------------------
+SELECT DISTINCT Province
+FROM bright_tv.brightdata.user_profiles;
+
+SELECT DISTINCT
+    CASE
+    WHEN Province=' ' THEN 'Uncategorized'
+    WHEN Province='None' THEN 'Uncategorized'
+    ELSE Province
+    END AS Region
+FROM bright_tv.brightdata.user_profiles;
+
+---------------------------------------------------------
+--Age
+---------------------------------------------------------
+SELECT MIN (age) AS min_age,
+ MAX(age) AS max_age
+FROM bright_tv.brightdata.user_profiles;
+
+SELECT COUNT(*) AS cnt
+FROM bright_tv.brightdata.user_profiles
+WHERE age IS NULL;
+
+WITH user_profiles AS (
+    SELECT 
+        UserID,
+        
+        CASE
+            WHEN Province = ' ' THEN 'Uncategorized'
+            WHEN Province = 'None' THEN 'Uncategorized'
+            WHEN Province IS NULL THEN 'Uncategorized'
+            ELSE Province
+        END AS Region,
+        
+        age,
+        
+        CASE
+            WHEN age = 0 THEN 'Infants'
+            WHEN age BETWEEN 1 AND 12 THEN 'Kids'
+            WHEN age BETWEEN 13 AND 19 THEN 'Teenager'
+            WHEN age BETWEEN 20 AND 35 THEN 'Youth'
+            WHEN age BETWEEN 36 AND 50 THEN 'Adult'
+            WHEN age BETWEEN 51 AND 65 THEN 'Elder'
+            WHEN age > 65 THEN 'Pensioner'
+            ELSE 'Unknown'
+        END AS age_groups,
+        
+        CASE
+            WHEN email IS NOT NULL AND email <> ' ' AND email <> 'None' THEN 1
+            ELSE 0
+        END AS email_flag,
+        
+        CASE
+            WHEN `Social Media Handle` IS NOT NULL 
+                 AND `Social Media Handle` <> ' ' 
+                 AND `Social Media Handle` <> 'None' THEN 1
+            ELSE 0
+        END AS sm_flag,
+        
+        CASE
+            WHEN Race = 'other' THEN 'None'
+            WHEN Race = ' ' THEN 'None'
+            WHEN Race IS NULL THEN 'None'
+            ELSE Race
+        END AS Race,
+        
+        CASE
+            WHEN gender = ' ' THEN 'None'
+            WHEN gender IS NULL THEN 'None'
+            ELSE gender
+        END AS Gender
+        
+    FROM bright_tv.brightdata.user_profiles
+)
+SELECT * FROM user_profiles;
+
+
+
+WITH User_profiles AS (
+    SELECT
+        COALESCE(UserID0, userid4) AS userid,
+        TO_CHAR(RecordDate2, 'yyyyMM') AS month_id,
+        TO_DATE(RecordDate2) AS watch_date,
+        TO_CHAR(RecordDate2, 'DD') AS day_of_month,
+        DAYNAME(RecordDate2) AS day_name,
+        MONTHNAME(RecordDate2) AS month_name,
+
+        CASE
+            WHEN DAYNAME(RecordDate2) IN ('Sat', 'Sun', 'Saturday', 'Sunday') THEN 'weekend'
+            ELSE 'weekday'
+        END AS day_classification
+
+    FROM bright_tv.brightdata.viewership
+)
+SELECT * FROM User_profiles;
+

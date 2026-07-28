@@ -61,11 +61,14 @@ FROM user_profiles
 
 SELECT DISTINCT 
   CASE
-   WHEN Race = 'None' THEN 'Unknown'
-   WHEN Race = 'other' THEN 'Unknown'
+   WHEN Race = 'None' THEN 'unknown'
+   WHEN Race = 'other' THEN 'unknown'
    ELSE Race
    END AS Race_Rechecks 
 FROM user_profiles ;
+
+
+
 
 
 
