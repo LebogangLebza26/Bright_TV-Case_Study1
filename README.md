@@ -6,7 +6,7 @@ BrightTV is a viewership analytics case study focused on understanding subscribe
 
 Dataset snapshots:
 
-10,000 viewing session records across 4,386 unique subscribers
+10,000 viewing session records across 4,386 unique subscribers 
 
 Period covered: January – March 2016
 
@@ -71,15 +71,12 @@ The project used a combination of analytics, visualisation, planning and present
 
 **Miro**          
 **Gantt Chart** 
- **SQL**         
-**Databricks**    
+ **SQL**       
+ **Databricks**    
 **Power BI**      
-**Google Sheets** 
-
+**Google Sheets**
 **Data Studio**
-
 **Lovable**
-
 **Canva**                                   
 **GitHub**  
 
